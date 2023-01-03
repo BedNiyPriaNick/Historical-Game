@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class GetMoney : MonoBehaviour
 {
-    public float Money = 0, MoneyAdded, Timer, Workers;
+    public float Money = 0, MoneyAdded, Timer, Workers = 1;
 
     [SerializeField] private TextMeshProUGUI TimerText;
     [SerializeField] private Text MoneyText;
@@ -14,11 +14,16 @@ public class GetMoney : MonoBehaviour
 
     private int StartTimer = 0;
 
-    private float TimeReset;
+    [HideInInspector] public float TimeReset;
+
+    [SerializeField] private GameObject human, money;
+    Animator humanAnim, moneyAnim;
 
     private void Start()
     {
         TimeReset = Timer;
+        humanAnim = human.GetComponent<Animator>();
+        moneyAnim = money.GetComponent<Animator>();
     }
 
     private void Update()
@@ -46,6 +51,10 @@ public class GetMoney : MonoBehaviour
 
     public void StartBtnClicked()
     {
+        humanAnim.StopPlayback();
+        moneyAnim.StopPlayback();
         StartTimer = 1;
+        humanAnim.SetTrigger("work");
+        moneyAnim.SetTrigger("go");
     }
 }

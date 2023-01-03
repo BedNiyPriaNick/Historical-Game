@@ -24,7 +24,10 @@ public class BuyItems : MonoBehaviour
 
         MoneyScript.MoneyAdded += AddMoney;
         MoneyScript.Money += AddNowMoney;
-        MoneyScript.Timer -= ReduceTimer;
+
+        MoneyScript.TimeReset -= ReduceTimer;
+        MoneyScript.Timer = MoneyScript.TimeReset;
+
         MoneyScript.Workers += AddWorkers;
 
         ItemObtained = 1;
