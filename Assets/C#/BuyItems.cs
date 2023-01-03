@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BuyItems : MonoBehaviour
 {
-    [SerializeField] private float ItemPrice, ItemObtained, AddMoney, ReduceTimer;
+    [SerializeField] private float ItemPrice, ItemObtained, AddNowMoney, AddMoney, ReduceTimer, AddWorkers;
 
     [SerializeField] private GetMoney MoneyScript;
 
@@ -23,7 +23,9 @@ public class BuyItems : MonoBehaviour
         MoneyScript.Money -= ItemPrice;
 
         MoneyScript.MoneyAdded += AddMoney;
+        MoneyScript.Money += AddNowMoney;
         MoneyScript.Timer -= ReduceTimer;
+        MoneyScript.Workers += AddWorkers;
 
         ItemObtained = 1;
 

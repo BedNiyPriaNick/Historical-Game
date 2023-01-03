@@ -6,15 +6,15 @@ using UnityEngine.UI;
 
 public class GetMoney : MonoBehaviour
 {
-    public float Money = 0, MoneyAdded, Timer;
+    public float Money = 0, MoneyAdded, Timer, Workers;
 
     [SerializeField] private TextMeshProUGUI TimerText;
     [SerializeField] private Text MoneyText;
+    [SerializeField] private Text WorkerText;
 
     private int StartTimer = 0;
 
     private float TimeReset;
-    
 
     private void Start()
     {
@@ -25,6 +25,7 @@ public class GetMoney : MonoBehaviour
     {
         MoneyText.text = "Money: " + Money.ToString() + "$";
         TimerText.text = Timer.ToString("0.0");
+        WorkerText.text = "Workers: " + Workers.ToString();
 
         if(StartTimer >= 1)
         {
@@ -33,6 +34,10 @@ public class GetMoney : MonoBehaviour
 
         if(Timer < -0)
         {
+            if(Workers >= 1)
+            {
+                MoneyAdded += Workers;
+            }
             Money += MoneyAdded;
             Timer = TimeReset;
             StartTimer = 0;
