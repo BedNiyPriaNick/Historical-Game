@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BuyItems : MonoBehaviour
 {
-    [SerializeField] private float ItemPrice, ItemObtained, AddNowMoney, AddMoney, ReduceTimer, AddWorkers;
+    [SerializeField] private float ItemPrice, ItemObtained, AddNowMoney, AddMoney, ReduceTimer, AddWorkers, Pizza;
 
     [SerializeField] private GetMoney MoneyScript;
+
+    [SerializeField] private bool nextLevelLoad;
 
     public void BuyItem()
     {
@@ -21,6 +24,12 @@ public class BuyItems : MonoBehaviour
         }
 
         MoneyScript.Money -= ItemPrice;
+        MoneyScript.Pizza -= Pizza;
+
+        if (nextLevelLoad)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
 
         MoneyScript.MoneyAdded += AddMoney;
         MoneyScript.Money += AddNowMoney;

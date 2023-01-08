@@ -6,11 +6,12 @@ using UnityEngine.UI;
 
 public class GetMoney : MonoBehaviour
 {
-    public float Money = 0, MoneyAdded, Timer, Workers = 1;
+    public float Money = 0, MoneyAdded, Timer, Workers = 1, Pizza, PizzaAdded;
 
     [SerializeField] private TextMeshProUGUI TimerText;
     [SerializeField] private Text MoneyText;
     [SerializeField] private Text WorkerText;
+    [SerializeField] private Text PizzaC;
 
     private int StartTimer = 0;
 
@@ -19,42 +20,92 @@ public class GetMoney : MonoBehaviour
     [SerializeField] private GameObject human, money;
     Animator humanAnim, moneyAnim;
 
+    [SerializeField] private Energy energy;
+
     private void Start()
     {
         TimeReset = Timer;
-        humanAnim = human.GetComponent<Animator>();
-        moneyAnim = money.GetComponent<Animator>();
+        try
+        {
+            humanAnim = human.GetComponent<Animator>();
+            moneyAnim = money.GetComponent<Animator>();
+        }
+        catch { }
     }
 
     private void Update()
     {
-        MoneyText.text = "Money: " + Money.ToString() + "$";
-        TimerText.text = Timer.ToString("0.0");
-        WorkerText.text = "Workers: " + Workers.ToString();
+        if(Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape))
+        {
+            StopGame();
+        }
 
-        if(StartTimer >= 1)
+        if(energy?.bar.value <= 0)
+        {
+            Die();
+        }
+
+        TimerText.text = Timer.ToString("0.0");
+        PizzaC.text = Pizza.ToString();
+
+        if (StartTimer >= 1)
         {
             Timer -= 1 * Time.deltaTime;
         }
 
-        if(Timer < -0)
+        if (Timer < -0)
         {
-            if(Workers >= 1)
-            {
-                MoneyAdded += Workers;
-            }
             Money += MoneyAdded;
+            Pizza += PizzaAdded;
             Timer = TimeReset;
             StartTimer = 0;
+        }
+
+        try
+        {   
+            MoneyText.text = "Money: " + Money.ToString() + "$";
+            WorkerText.text = "Workers: " + Workers.ToString();
+        }
+        catch
+        {
+            
         }
     }
 
     public void StartBtnClicked()
     {
-        humanAnim.StopPlayback();
-        moneyAnim.StopPlayback();
-        StartTimer = 1;
         humanAnim.SetTrigger("work");
-        moneyAnim.SetTrigger("go");
+        try
+        {
+            humanAnim.StopPlayback();
+            moneyAnim.StopPlayback();
+            humanAnim.SetTrigger("work");
+            moneyAnim.SetTrigger("go");
+        }      
+        catch
+        {
+
+        }
+        StartTimer = 1;
+    }
+
+    [SerializeField] private GameObject stop_panel, death_panel;
+
+    void StopGame()
+    {
+        stop_panel.SetActive(true);
+        Time.timeScale *= 0;
+    }
+
+    void Die()
+    {
+        death_panel.SetActive(true);
+        Time.timeScale *= 0;
+    }
+
+    public void Resume()
+    {
+        stop_panel.SetActive(false);
+        Time.timeScale = 1;
     }
 }
